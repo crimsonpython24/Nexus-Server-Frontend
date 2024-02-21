@@ -90,12 +90,17 @@ const App: React.FC = () => {
           style={{
             position: 'relative',
             width: '8px',
+            top: '0px',
             backgroundColor: '#001529',
             backgroundRepeat: 'repeat-y',
             height: '8px',
             left: collapsed ? '0px' : '200px',
             marginBottom: '-8px',
-            transition: 'all 0.21s, background 0s',
+            transitionBehavior: 'normal, normal',
+            transitionDuration: '0.2s, 0s',
+            transitionTimingFunction: 'ease, ease',
+            transitionDelay: '0s, 0.2s',
+            transitionProperty: 'all, background',
           }}
         >
           <div
@@ -107,6 +112,7 @@ const App: React.FC = () => {
             }}
           ></div>
         </div>
+
         <Menu
           theme="dark"
           mode="inline"
@@ -172,15 +178,12 @@ const App: React.FC = () => {
             }}
           >
             <p>long content</p>
-            {
-              // indicates very long content
-              Array.from({ length: 100 }, (_, index) => (
-                <React.Fragment key={index}>
-                  {index % 20 === 0 && !isNaN(index) ? 'more' : '...'}
-                  <br />
-                </React.Fragment>
-              ))
-            }
+            {Array.from({ length: 100 }, (_, index) => (
+              <React.Fragment key={index}>
+                {index % 20 === 0 && !isNaN(index) ? 'more' : '...'}
+                <br />
+              </React.Fragment>
+            ))}
           </div>
         </Content>
         <Footer
@@ -191,7 +194,7 @@ const App: React.FC = () => {
             marginLeft: collapsed ? '0px' : '200px',
           }}
         >
-          @crimsonpython24 | @KevinKWZheng | @zywang-j <br />
+          crimsonpython24 | KevinKWZheng | zywang-j <br />
           ©2023-24
         </Footer>
       </Layout>
