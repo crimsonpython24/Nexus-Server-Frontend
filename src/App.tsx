@@ -2,6 +2,7 @@ import { Breadcrumb, Layout, theme } from 'antd';
 import React from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
+import { useUser } from './libraries/userContextConst';
 
 const { Content, Footer } = Layout;
 
@@ -9,9 +10,10 @@ const App: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const userState = useUser();
 
   return (
-    <Navigation>
+    <Navigation userState={userState}>
       {(collapsed) => (
         <>
           <Content

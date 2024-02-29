@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
+import { UserProvider } from './libraries/userContext.tsx';
 
 const rootElement = document.getElementById('root');
 if (rootElement === null) {
@@ -15,13 +16,23 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: '/test',
+    path: '/test/',
     element: <h1>owo</h1>,
+  },
+  {
+    path: '/login/',
+    element: <h1>login page</h1>,
+  },
+  {
+    path: '/signup/',
+    element: <h1>signup page</h1>,
   },
 ]);
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>
 );
