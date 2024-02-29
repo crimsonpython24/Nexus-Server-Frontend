@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
 
 const rootElement = document.getElementById('root');
@@ -8,8 +9,19 @@ if (rootElement === null) {
 }
 const root = ReactDOM.createRoot(rootElement);
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+  },
+  {
+    path: '/test',
+    element: <h1>owo</h1>,
+  },
+]);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
