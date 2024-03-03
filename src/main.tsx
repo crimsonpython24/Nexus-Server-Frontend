@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
 import { UserProvider } from './libraries/userContext.tsx';
+import Login from './pages/Login.tsx';
+import Signup from './pages/Signup.tsx';
 
 const rootElement = document.getElementById('root');
 if (rootElement === null) {
@@ -11,22 +13,10 @@ if (rootElement === null) {
 const root = ReactDOM.createRoot(rootElement);
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-  },
-  {
-    path: '/test/',
-    element: <h1>owo</h1>,
-  },
-  {
-    path: '/login/',
-    element: <h1>login page</h1>,
-  },
-  {
-    path: '/signup/',
-    element: <h1>signup page</h1>,
-  },
+  { path: '/', element: <App /> },
+  { path: '/login/', element: <Login /> },
+  { path: '/signup/', element: <Signup /> },
+  { path: '/reset-password/', element: <h1>u bum</h1> },
 ]);
 
 root.render(

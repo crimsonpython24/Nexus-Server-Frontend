@@ -1,0 +1,18 @@
+.login-form-parent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 350px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+.go-back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}

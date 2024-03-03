@@ -25,6 +25,7 @@ function getItem(
   label: React.ReactNode,
   key: React.Key,
   disabled: boolean,
+  style: React.CSSProperties | null = {},
   icon?: React.ReactNode,
   children?: MenuItem[],
   type?: 'group'
@@ -33,6 +34,7 @@ function getItem(
     label,
     key,
     disabled,
+    style: style ?? {},
     icon,
     children,
     type,
@@ -49,18 +51,27 @@ const NotLoggedInLabel: React.ReactNode = (
   </>
 );
 
-const AccountNode: React.ReactNode = (
-  <>
-    <span>Account management link </span>
-  </>
-);
+// const AccountNode: React.ReactNode = (
+//   <>
+//     <span>Account management link </span>
+//   </>
+// );
 
 const NotLoggedInOptions: MenuItem[] = [
-  getItem(NotLoggedInLabel, '1', false, null, [], 'group'),
+  getItem(NotLoggedInLabel, '1', false, null, null, [], 'group'),
 ];
 
 const LoggedInOptions: MenuItem[] = [
-  getItem('You have no active chats.', '1', false, null, [], 'group'),
+  getItem('You have no active chats.', '1', false, null, null, [], 'group'),
+  getItem(
+    'Account',
+    '2',
+    false,
+    { position: 'absolute', bottom: 16, left: 0 },
+    null,
+    [],
+    'group'
+  ),
 ];
 
 const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
@@ -70,7 +81,6 @@ const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
-  console.log(userState);
 
   return (
     <Layout>
@@ -101,7 +111,6 @@ const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
             !userState.authenticated ? NotLoggedInOptions : LoggedInOptions
           }
         />
-        {userState.authenticated && AccountNode}
       </Sider>
       <Layout>
         <Header className="header-main">

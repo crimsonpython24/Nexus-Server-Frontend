@@ -1,10 +1,10 @@
-import { Breadcrumb, Layout, theme } from 'antd';
+import { Layout, theme } from 'antd';
 import React from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
 import { useUser } from './libraries/userContextConst';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 const App: React.FC = () => {
   const {
@@ -20,12 +20,7 @@ const App: React.FC = () => {
             style={{
               marginLeft: collapsed !== null && collapsed ? '0px' : '250px',
             }}
-          >
-            <Breadcrumb
-              style={{ padding: '16px' }}
-              items={[{ title: 'Home' }, { title: 'List' }, { title: 'App' }]}
-            />
-          </Content>
+          ></Content>
           <Content
             className="content-main"
             style={{
@@ -34,9 +29,7 @@ const App: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {' '}
             <div>
-              <p>long content</p>
               {Array.from({ length: 100 }, (_, index) => (
                 <React.Fragment key={index}>
                   {index % 20 === 0 && !isNaN(index) ? 'more' : '...'}
@@ -45,15 +38,6 @@ const App: React.FC = () => {
               ))}
             </div>
           </Content>
-          <Footer
-            className="footer-main"
-            style={{
-              marginLeft: collapsed !== null && collapsed ? '0px' : '250px',
-            }}
-          >
-            crimsonpython24 | KevinKWZheng | zywang-j <br />
-            ©2023-24
-          </Footer>
         </>
       )}
     </Navigation>

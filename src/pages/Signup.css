@@ -1,0 +1,23 @@
+.signup-form-parent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 500px;
+}
+.go-back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+.tail-form-items {
+  margin-bottom: 24px !important;
+}
+.tail-form-text {
+  margin-top: -24px !important;
+  text-align: center;
+}
+.hor-center-item {
+  display: table;
+  margin: 0 auto;
+}
