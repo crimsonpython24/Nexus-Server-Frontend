@@ -3,9 +3,10 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Button, Form, Input, Typography } from 'antd';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { key } from './Key.tsx';
 import './Signup.css';
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 const formItemLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 8 } },
@@ -25,11 +26,10 @@ const App: React.FC = () => {
     console.log('Received values of form: ', values);
   };
   const HCaptchaProps = {
-    sitekey: '81558575-6ce2-4a8b-aca8-06ac95dbec14',
+    sitekey: key,
     theme: 'light',
     onVerify: () => {
       setRegVerified(true);
-      console.log('here');
     },
   };
 
@@ -132,19 +132,17 @@ const App: React.FC = () => {
             className="tail-form-text hor-center-item"
           >
             <Text type="secondary">
-              By clicking the &quot;Register&quot; button, you agreed to have
-              read our
+              By clicking the &quot;Register&quot; button, you confirmed to be
+              at least the age of 18, and have read and agree to our{' '}
             </Text>
 
-            <Link href="https://ant.design" target="_blank">
-              {' '}
+            <RouterLink to="/privacy-policy/" target="_blank">
               privacy policy{' '}
-            </Link>
-            <Text type="secondary">and our</Text>
-            <Link href="https://ant.design" target="_blank">
-              {' '}
+            </RouterLink>
+            <Text type="secondary">and our </Text>
+            <RouterLink to="/terms-of-service/" target="_blank">
               terms of service
-            </Link>
+            </RouterLink>
             <Text type="secondary">.</Text>
           </Form.Item>
         </Form>

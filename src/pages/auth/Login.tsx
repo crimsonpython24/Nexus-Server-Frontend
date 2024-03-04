@@ -3,6 +3,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { key } from './Key.tsx';
 
 import './Login.css';
 
@@ -15,11 +16,10 @@ const App: React.FC = () => {
     console.log(values);
   };
   const HCaptchaProps = {
-    sitekey: '81558575-6ce2-4a8b-aca8-06ac95dbec14',
+    sitekey: key,
     theme: 'light',
     onVerify: () => {
       setlogVerified(true);
-      console.log('here');
     },
   };
 
@@ -44,7 +44,10 @@ const App: React.FC = () => {
         >
           <Form.Item
             name="email"
-            rules={[{ required: true, message: 'Email is required' }]}
+            rules={[
+              { type: 'email', message: 'Invalid E-Mail' },
+              { required: true, message: 'Email is required' },
+            ]}
           >
             <Input placeholder="Email" />
           </Form.Item>

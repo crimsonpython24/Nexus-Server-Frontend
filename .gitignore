@@ -25,3 +25,6 @@ dist-ssr
 
 # mac
 .DS_Store
+
+# hcaptcha secret key
+Key.tsx

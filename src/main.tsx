@@ -3,8 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
 import { UserProvider } from './libraries/userContext.tsx';
-import Login from './pages/Login.tsx';
-import Signup from './pages/Signup.tsx';
+import Login from './pages/auth/Login.tsx';
+import ResetPassword from './pages/auth/ResetPassword.tsx';
+import Signup from './pages/auth/Signup.tsx';
+import NotFound from './pages/misc/404.tsx';
+import PrivacyPolicy from './pages/misc/PrivacyPolicy.tsx';
+import ToS from './pages/misc/ToS.tsx';
 
 const rootElement = document.getElementById('root');
 if (rootElement === null) {
@@ -16,7 +20,10 @@ const router = createBrowserRouter([
   { path: '/', element: <App /> },
   { path: '/login/', element: <Login /> },
   { path: '/signup/', element: <Signup /> },
-  { path: '/reset-password/', element: <h1>u bum</h1> },
+  { path: '/reset-password/', element: <ResetPassword /> },
+  { path: '/privacy-policy/', element: <PrivacyPolicy /> },
+  { path: '/terms-of-service/', element: <ToS /> },
+  { path: '*', element: <NotFound /> },
 ]);
 
 root.render(
