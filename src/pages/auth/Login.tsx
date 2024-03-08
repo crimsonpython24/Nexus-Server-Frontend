@@ -1,20 +1,74 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
-// import axios from 'axios';
+import axios from 'axios';
+import { type ServerResponse } from 'http';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { key } from './Key.tsx';
 
+import { getHash, sign } from '../../util/util.ts';
+import { key } from './Key.tsx';
 import './Login.css';
+
+const fetcher = axios.create({
+  baseURL: `https://cors-anywhere.herokuapp.com/http://api.fulcrum-ai.dev:11451/`,
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  },
+  validateStatus: (status) => {
+    return status <= 500;
+  },
+});
 
 interface HCaptchaFix extends React.Component {}
 const HCaptchaNew = HCaptcha as object as new () => HCaptchaFix;
 
+const login = async (username: string, password: string): Promise<object> => {
+  let secretKey: string = '';
+  let signed: string = '';
+
+  await getHash(password)
+    .then((text: string) => {
+      secretKey = text;
+    })
+    .catch((error) => {
+      console.error('Error in getHash:', error);
+    });
+
+  const body = { username };
+
+  await sign(JSON.stringify(body), secretKey)
+    .then((text: string) => {
+      signed = text;
+    })
+    .catch((error) => {
+      console.error('Error in sign:', error);
+    });
+
+  const response = await fetcher.post(`/login`, JSON.stringify(body), {
+    headers: {
+      signature: signed,
+    },
+  });
+  const result = response.data as ServerResponse;
+  const errMsg = ``;
+  return { result, errMsg };
+};
+
+interface loginValues {
+  username: string;
+  password: string;
+  remember: boolean;
+}
+
 const App: React.FC = () => {
   const [logVerified, setlogVerified] = useState(false);
-  const onFinish = (values: object): void => {
+  const onFinish = (values: loginValues): void => {
     console.log('test values: ', values);
+    login(values.username, values.password).catch((error) => {
+      console.error('Error in getHash:', error);
+    });
   };
   const HCaptchaProps = {
     sitekey: key,
@@ -44,13 +98,10 @@ const App: React.FC = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="email"
-            rules={[
-              { type: 'email', message: 'Invalid E-Mail' },
-              { required: true, message: 'Email is required' },
-            ]}
+            name="username"
+            rules={[{ required: true, message: 'Username is required' }]}
           >
-            <Input placeholder="Email" />
+            <Input placeholder="Username" />
           </Form.Item>
           <Form.Item
             name="password"
