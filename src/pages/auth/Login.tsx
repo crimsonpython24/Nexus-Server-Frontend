@@ -1,6 +1,7 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
+// import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { key } from './Key.tsx';
@@ -13,7 +14,7 @@ const HCaptchaNew = HCaptcha as object as new () => HCaptchaFix;
 const App: React.FC = () => {
   const [logVerified, setlogVerified] = useState(false);
   const onFinish = (values: object): void => {
-    console.log(values);
+    console.log('test values: ', values);
   };
   const HCaptchaProps = {
     sitekey: key,
