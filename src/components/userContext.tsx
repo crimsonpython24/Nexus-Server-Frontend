@@ -4,8 +4,15 @@ interface Props {
   children: React.ReactNode;
 }
 
+interface LoginPayload {
+  username: string;
+  password: string;
+  remember: boolean;
+}
+
 export interface UserAction {
   type: string;
+  payload: LoginPayload;
 }
 
 export interface UserInterface {
@@ -39,13 +46,16 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
 const userReducer: Reducer<UserInterface, UserAction> = (state, action) => {
   switch (action.type) {
     case 'logged_in': {
-      const user = state;
-      const userData = action;
-      return { ...user, ...userData };
+      const { password, ...cleanPayload } = action.payload;
+      return {
+        ...state,
+        ...cleanPayload,
+        authenticated: true,
+        email: '',
+      };
     }
     case 'logged_out': {
-      const user = InitialUser;
-      return { ...user };
+      return { ...InitialUser };
     }
     default: {
       throw new Error('Unknown action: ' + action.type);

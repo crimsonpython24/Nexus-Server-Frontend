@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
-import { UserProvider } from './libraries/userContext.tsx';
+import { UserProvider } from './components/userContext.tsx';
 import Login from './pages/auth/Login.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
 import Signup from './pages/auth/Signup.tsx';
