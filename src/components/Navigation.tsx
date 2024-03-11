@@ -1,10 +1,11 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Layout, Menu, theme } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../App.css';
+import Logout from '../pages/auth/Logout.tsx';
 import { type NavigationProps } from '../util/types';
 
 const { Header, Sider } = Layout;
@@ -41,11 +42,11 @@ const NotLoggedInLabel: React.ReactNode = (
   </>
 );
 
-// const AccountNode: React.ReactNode = (
-//   <>
-//     <span>Account management link </span>
-//   </>
-// );
+const LoggedInLabel: React.ReactNode = (
+  <>
+    Account | <Logout />
+  </>
+);
 
 const NotLoggedInOptions: MenuItem[] = [
   getItem(NotLoggedInLabel, '1', false, null, null, [], 'group'),
@@ -54,7 +55,7 @@ const NotLoggedInOptions: MenuItem[] = [
 const LoggedInOptions: MenuItem[] = [
   getItem('You have no active chats.', '1', false, null, null, [], 'group'),
   getItem(
-    'Account',
+    LoggedInLabel,
     '2',
     false,
     { position: 'absolute', bottom: 16, left: 0 },
@@ -71,6 +72,9 @@ const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+  useEffect(() => {
+    console.log('navigation prop: ', userState);
+  }, [userState]);
 
   return (
     <Layout>

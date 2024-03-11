@@ -1,4 +1,10 @@
-import React, { createContext, useReducer, type Reducer } from 'react';
+import Cookies from 'js-cookie';
+import React, {
+  createContext,
+  useEffect,
+  useReducer,
+  type Reducer,
+} from 'react';
 
 import {
   type Props,
@@ -10,7 +16,6 @@ import {
 const InitialUserData: UserData = {
   username: '',
   email: '',
-  password: '',
   isAdmin: false,
   conversations: [],
   secretKey: '',
@@ -21,17 +26,46 @@ const InitialUserData: UserData = {
   remember: true,
 };
 
-const InitialUser: UserStateInterface = {
-  user: InitialUserData,
-  authenticated: false,
+const loadUserDataFromCookies = (): UserData => {
+  if (Cookies.get('user') === undefined) return InitialUserData;
+  const userCookie: string = Cookies.get('user');
+  // Cookies.remove('user');     // enable this line to delete test cookies
+  if (userCookie !== undefined) {
+    const data = JSON.parse(userCookie);
+    console.log('usercontext cookie data ', JSON.stringify(data.user));
+    return data.user;
+  } else {
+    return InitialUserData;
+  }
 };
 
-export const UserContext = createContext(InitialUser);
+const loadUserAuthFromCookies = (): boolean => {
+  if (Cookies.get('user') === undefined) return false;
+  const userCookie: string = Cookies.get('user').username;
+  return userCookie !== null && userCookie !== undefined;
+};
+
+const getUserInitialState = (): UserStateInterface => {
+  return {
+    user: loadUserDataFromCookies(),
+    authenticated: loadUserAuthFromCookies(),
+  };
+};
+
+export const UserContext = createContext<null | UserStateInterface>(null);
 export const UserDispatchContext =
   createContext<React.Dispatch<UserAction> | null>(null);
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
-  const [user, dispatch] = useReducer(userReducer, InitialUser);
+  const [user, dispatch] = useReducer(userReducer, getUserInitialState());
+  // const contextValue = useMemo(() => ({ user, dispatch }), [user, dispatch]);
+
+  useEffect(() => {
+    Cookies.set(
+      'user',
+      JSON.stringify({ user: user.user, authenticated: user.authenticated })
+    );
+  }, [user]);
 
   return (
     <UserContext.Provider value={user}>
@@ -49,17 +83,22 @@ const userReducer: Reducer<UserStateInterface, UserAction> = (
   switch (action.type) {
     case 'logged_in': {
       const { password, ...cleanPayload } = action.payload;
-      console.log(cleanPayload);
-      // console.log(state);
       const UserLoginData: UserData = { ...state.user, ...cleanPayload };
-      console.log('userlogindata', UserLoginData);
-      return {
+
+      const newState = {
         user: UserLoginData,
         authenticated: true,
       };
+
+      Cookies.set(
+        'user',
+        JSON.stringify({ user: newState.user, authenticated: true })
+      );
+      return newState;
     }
     case 'logged_out': {
-      return { ...InitialUser };
+      Cookies.remove('user');
+      return { user: InitialUserData, authenticated: false };
     }
     default: {
       throw new Error('Unknown action: ' + action.type);

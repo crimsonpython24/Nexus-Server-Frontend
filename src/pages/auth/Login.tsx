@@ -2,8 +2,9 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   UserContext,
@@ -61,7 +62,6 @@ const login = async (
   });
   const result: LoginResult = response.data;
 
-  // console.log(result);
   return result;
 };
 
@@ -71,6 +71,7 @@ const App: React.FC = () => {
   const [logVerified, setlogVerified] = useState(false);
   const userDispatch = useContext(UserDispatchContext);
   const userState = useContext(UserContext);
+  const nav = useNavigate();
 
   useEffect(() => {
     console.log('User state updated:', userState);
@@ -80,14 +81,9 @@ const App: React.FC = () => {
     login(values.username, values.password)
       .then((result) => {
         if (result.status) {
-          console.log(result.status);
-          console.log(result.msg);
-          console.log(values);
           // set context provider values
           userDispatch?.({ type: 'logged_in', payload: values });
-          console.log(userState);
-
-          // show popup & redirect after timeout
+          nav('/');
         } else {
           console.error(result.msg);
         }
@@ -104,6 +100,15 @@ const App: React.FC = () => {
       setlogVerified(true);
     },
   };
+
+  useEffect(() => {
+    const userCookie: string = Cookies.get('user');
+    if (userCookie !== null) {
+      const user = JSON.parse(userCookie);
+      console.log('login useeffect: ', userCookie);
+      userDispatch?.({ type: 'logged_in', payload: user.user });
+    }
+  }, [userDispatch]);
 
   return (
     <>

@@ -2,7 +2,6 @@
 export interface UserData {
   username: string;
   email: string;
-  password: string;
   isAdmin: boolean;
   conversations: string[];
   secretKey: string;
