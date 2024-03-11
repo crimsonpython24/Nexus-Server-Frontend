@@ -1,14 +1,11 @@
 import type React from 'react';
 import { useContext } from 'react';
-import {
-  UserContext,
-  UserDispatchContext,
-  type UserAction,
-  type UserInterface,
-} from './userContext';
 
-export const useUser = (): UserInterface => {
-  return useContext<UserInterface>(UserContext);
+import { type UserAction, type UserStateInterface } from '../util/types';
+import { UserContext, UserDispatchContext } from './userContext';
+
+export const useUser = (): UserStateInterface => {
+  return useContext<UserStateInterface>(UserContext);
 };
 
 export const useUserDispatch = (): React.Dispatch<UserAction> | null => {

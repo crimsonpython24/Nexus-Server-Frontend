@@ -5,21 +5,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../App.css';
+import { type NavigationProps } from '../util/types';
 
 const { Header, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-interface UserStateInterface {
-  username: string;
-  email: string;
-  authenticated: boolean;
-}
-
-interface NavigationProps {
-  children: (collapsed: boolean) => React.ReactNode;
-  userState: UserStateInterface;
-}
 
 function getItem(
   label: React.ReactNode,

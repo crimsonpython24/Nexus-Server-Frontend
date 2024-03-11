@@ -9,6 +9,11 @@ import {
   UserContext,
   UserDispatchContext,
 } from '../../components/userContext.tsx';
+import {
+  type HCaptchaType,
+  type LoginPayload,
+  type LoginResult,
+} from '../../util/types';
 import { getHash, sign } from '../../util/util.ts';
 import { key } from './Key.tsx';
 import './Login.css';
@@ -24,23 +29,10 @@ const fetcher = axios.create({
   },
 });
 
-interface HCaptchaFix extends React.Component {}
-
-interface loginResult {
-  msg: string;
-  status: boolean;
-}
-
-interface loginValues {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-
 const login = async (
   username: string,
   password: string
-): Promise<loginResult> => {
+): Promise<LoginResult> => {
   let secretKey: string = '';
   let signed: string = '';
 
@@ -67,13 +59,13 @@ const login = async (
       signature: signed,
     },
   });
-  const result: loginResult = response.data;
+  const result: LoginResult = response.data;
 
   // console.log(result);
   return result;
 };
 
-const HCaptchaNew = HCaptcha as object as new () => HCaptchaFix;
+const HCaptchaNew = HCaptcha as object as new () => HCaptchaType;
 
 const App: React.FC = () => {
   const [logVerified, setlogVerified] = useState(false);
@@ -84,7 +76,7 @@ const App: React.FC = () => {
     console.log('User state updated:', userState);
   }, [userState]);
 
-  const onFinish = (values: loginValues): void => {
+  const onFinish = (values: LoginPayload): void => {
     login(values.username, values.password)
       .then((result) => {
         if (result.status) {

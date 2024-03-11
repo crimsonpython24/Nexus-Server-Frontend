@@ -4,12 +4,12 @@ import { Button, Form, Input, Typography } from 'antd';
 import { InputOTP } from 'antd-input-otp';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { key } from './Key.tsx';
 
+import { type HCaptchaType } from '../../util/types';
+import { key } from './Key.tsx';
 import './ResetPassword.css';
 
-interface HCaptchaFix extends React.Component {}
-const HCaptchaNew = HCaptcha as object as new () => HCaptchaFix;
+const HCaptchaNew = HCaptcha as object as new () => HCaptchaType;
 
 const App: React.FC = () => {
   const [logVerified, setlogVerified] = useState(false);

@@ -1,29 +1,28 @@
 import React, { createContext, useReducer, type Reducer } from 'react';
 
-interface Props {
-  children: React.ReactNode;
-}
+import {
+  type Props,
+  type UserAction,
+  type UserData,
+  type UserStateInterface,
+} from '../util/types';
 
-interface LoginPayload {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-
-export interface UserAction {
-  type: string;
-  payload: LoginPayload;
-}
-
-export interface UserInterface {
-  username: string;
-  email: string;
-  authenticated: boolean;
-}
-
-const InitialUser: UserInterface = {
+const InitialUserData: UserData = {
   username: '',
   email: '',
+  password: '',
+  isAdmin: false,
+  conversations: [],
+  secretKey: '',
+  contacts: [],
+  assistants: [],
+  invoices: [],
+  balance: 0,
+  remember: true,
+};
+
+const InitialUser: UserStateInterface = {
+  user: InitialUserData,
   authenticated: false,
 };
 
@@ -43,15 +42,20 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
   );
 };
 
-const userReducer: Reducer<UserInterface, UserAction> = (state, action) => {
+const userReducer: Reducer<UserStateInterface, UserAction> = (
+  state,
+  action
+) => {
   switch (action.type) {
     case 'logged_in': {
       const { password, ...cleanPayload } = action.payload;
+      console.log(cleanPayload);
+      // console.log(state);
+      const UserLoginData: UserData = { ...state.user, ...cleanPayload };
+      console.log('userlogindata', UserLoginData);
       return {
-        ...state,
-        ...cleanPayload,
+        user: UserLoginData,
         authenticated: true,
-        email: '',
       };
     }
     case 'logged_out': {

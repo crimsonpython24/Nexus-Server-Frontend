@@ -3,6 +3,8 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Button, Form, Input, Typography } from 'antd';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+
+import { type HCaptchaType } from '../../util/types';
 import { key } from './Key.tsx';
 import './Signup.css';
 
@@ -16,8 +18,7 @@ const tailFormItemLayout = {
   wrapperCol: { xs: { span: 24, offset: 0 }, sm: { span: 24, offset: 0 } },
 };
 
-interface HCaptchaFix extends React.Component {}
-const HCaptchaNew = HCaptcha as object as new () => HCaptchaFix;
+const HCaptchaNew = HCaptcha as object as new () => HCaptchaType;
 
 const App: React.FC = () => {
   const [regVerified, setRegVerified] = useState(false);
