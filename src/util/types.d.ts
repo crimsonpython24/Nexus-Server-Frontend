@@ -52,7 +52,7 @@ interface Invoice {
 // Navigation Props
 export interface NavigationProps {
   children: (collapsed: boolean) => React.ReactNode;
-  userState: UserStateInterface;
+  userState: UserStateInterface | null;
 }
 
 export interface Props {
@@ -61,3 +61,9 @@ export interface Props {
 
 // Miscellaneous
 export interface HCaptchaType extends React.Component {}
+
+// Popups
+export interface PopupContextType {
+  showMessage: boolean;
+  setShowMessage: Dispatch<SetStateAction<boolean>>;
+}

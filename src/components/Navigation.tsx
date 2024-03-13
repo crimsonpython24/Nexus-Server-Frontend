@@ -99,7 +99,9 @@ const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
           mode="inline"
           defaultSelectedKeys={['1']}
           items={
-            !userState.authenticated ? NotLoggedInOptions : LoggedInOptions
+            userState !== null && !userState.authenticated
+              ? NotLoggedInOptions
+              : LoggedInOptions
           }
         />
       </Sider>
