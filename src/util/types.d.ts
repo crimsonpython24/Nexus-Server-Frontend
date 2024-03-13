@@ -1,15 +1,11 @@
 // User Stuffs
 export interface UserData {
   username: string;
-  email: string;
-  isAdmin: boolean;
   conversations: string[];
   secretKey: string;
-  contacts: string[];
   assistants: string[];
   invoices: Invoice[];
   balance: number;
-  remember: boolean;
 }
 
 export interface UserStateInterface {
@@ -20,7 +16,12 @@ export interface UserStateInterface {
 export interface LoginPayload {
   username: string;
   password: string;
-  remember: boolean;
+}
+
+export interface ModifiedLoginPayload {
+  username: string;
+  password: string;
+  secretKey: string;
 }
 
 export interface UserAction {
@@ -31,6 +32,7 @@ export interface UserAction {
 export interface LoginResult {
   msg: string;
   status: boolean;
+  secretKey: string;
 }
 
 // Chat Types

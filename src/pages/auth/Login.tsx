@@ -1,8 +1,7 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import { Button, Form, Input, Typography } from 'antd';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -14,10 +13,13 @@ import {
   type HCaptchaType,
   type LoginPayload,
   type LoginResult,
+  type ModifiedLoginPayload,
 } from '../../util/types';
 import { getHash, sign } from '../../util/util.ts';
 import { key } from './Key.tsx';
 import './Login.css';
+
+const { Text } = Typography;
 
 const fetcher = axios.create({
   baseURL: `https://cors-anywhere.herokuapp.com/http://api.fulcrum-ai.dev:11451/`,
@@ -61,6 +63,7 @@ const login = async (
     },
   });
   const result: LoginResult = response.data;
+  result.secretKey = signed;
 
   return result;
 };
@@ -74,15 +77,20 @@ const App: React.FC = () => {
   const nav = useNavigate();
 
   useEffect(() => {
-    console.log('User state updated:', userState);
-  }, [userState]);
+    if (userState?.user.username !== '') {
+      console.log('already logged in');
+      nav('/');
+    }
+  }, [userState?.user.username, nav]);
 
   const onFinish = (values: LoginPayload): void => {
     login(values.username, values.password)
       .then((result) => {
+        const secretKey: string = result.secretKey;
+        const pl: ModifiedLoginPayload = { ...values, secretKey };
         if (result.status) {
           // set context provider values
-          userDispatch?.({ type: 'logged_in', payload: values });
+          userDispatch?.({ type: 'logged_in', payload: pl });
           nav('/');
         } else {
           console.error(result.msg);
@@ -100,15 +108,6 @@ const App: React.FC = () => {
       setlogVerified(true);
     },
   };
-
-  useEffect(() => {
-    const userCookie: string = Cookies.get('user');
-    if (userCookie !== null) {
-      const user = JSON.parse(userCookie);
-      console.log('login useeffect: ', userCookie);
-      userDispatch?.({ type: 'logged_in', payload: user.user });
-    }
-  }, [userDispatch]);
 
   return (
     <>
@@ -142,12 +141,12 @@ const App: React.FC = () => {
             <Input.Password type="password" placeholder="Password" />
           </Form.Item>
           <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-            <Link className="login-form-forgot" to="/reset-password">
+            {/* <Link className="login-form-forgot" to="/reset-password">
               Forgot Password?
-            </Link>
+            </Link> */}
+            <Text type="secondary" className="login-form-forgot">
+              Please contact us to reset password.
+            </Text>
           </Form.Item>
 
           <Form.Item className="tail-form-items hor-center-item">

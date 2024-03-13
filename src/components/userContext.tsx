@@ -15,24 +15,18 @@ import {
 
 const InitialUserData: UserData = {
   username: '',
-  email: '',
-  isAdmin: false,
   conversations: [],
   secretKey: '',
-  contacts: [],
   assistants: [],
   invoices: [],
   balance: 0,
-  remember: true,
 };
 
 const loadUserDataFromCookies = (): UserData => {
   if (Cookies.get('user') === undefined) return InitialUserData;
   const userCookie: string = Cookies.get('user');
-  // Cookies.remove('user');     // enable this line to delete test cookies
   if (userCookie !== undefined) {
     const data = JSON.parse(userCookie);
-    console.log('usercontext cookie data ', JSON.stringify(data.user));
     return data.user;
   } else {
     return InitialUserData;
@@ -41,8 +35,13 @@ const loadUserDataFromCookies = (): UserData => {
 
 const loadUserAuthFromCookies = (): boolean => {
   if (Cookies.get('user') === undefined) return false;
-  const userCookie: string = Cookies.get('user').username;
-  return userCookie !== null && userCookie !== undefined;
+  const userCookie: string = Cookies.get('user');
+  if (userCookie !== undefined) {
+    const data = JSON.parse(userCookie);
+    return data.authenticated;
+  } else {
+    return false;
+  }
 };
 
 const getUserInitialState = (): UserStateInterface => {
@@ -58,7 +57,6 @@ export const UserDispatchContext =
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
   const [user, dispatch] = useReducer(userReducer, getUserInitialState());
-  // const contextValue = useMemo(() => ({ user, dispatch }), [user, dispatch]);
 
   useEffect(() => {
     Cookies.set(
@@ -85,6 +83,7 @@ const userReducer: Reducer<UserStateInterface, UserAction> = (
       const { password, ...cleanPayload } = action.payload;
       const UserLoginData: UserData = { ...state.user, ...cleanPayload };
 
+      // console.log('user log in: ', cleanPayload);
       const newState = {
         user: UserLoginData,
         authenticated: true,

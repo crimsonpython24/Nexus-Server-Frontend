@@ -1,7 +1,7 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Layout, Menu, theme } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../App.css';
@@ -72,9 +72,6 @@ const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
-  useEffect(() => {
-    console.log('navigation prop: ', userState);
-  }, [userState]);
 
   return (
     <Layout>
