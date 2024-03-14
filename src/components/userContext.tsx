@@ -25,6 +25,7 @@ const InitialUserData: UserData = {
 const loadUserDataFromCookies = (): UserData => {
   if (Cookies.get('user') === undefined) return InitialUserData;
   const userCookie: string = Cookies.get('user');
+  console.log(userCookie);
   if (userCookie !== undefined) {
     const data = JSON.parse(userCookie);
     return data.user;

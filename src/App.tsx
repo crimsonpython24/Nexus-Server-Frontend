@@ -5,7 +5,7 @@ import React from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
 import { usePopupContext } from './components/PopupContextConst';
-import { useUser } from './components/userContextConst';
+import { useUser } from './components/UserContextConst';
 
 const { Content } = Layout;
 
@@ -37,11 +37,13 @@ const App: React.FC = () => {
   React.useEffect(() => {
     if (showMessage && !prevShowMessageRef.current) {
       if (messageType === 'loginsuccess') {
-        console.log('login success');
         void showPopupMessage('success', 'Login successful!');
         setMessageType(null);
       } else if (messageType === 'loginredirecterror') {
-        void showPopupMessage('error', 'You are already logged in.');
+        void showPopupMessage('error', 'You are already logged in');
+        setMessageType(null);
+      } else if (messageType === 'usernotautherror') {
+        void showPopupMessage('error', 'You are not logged in');
         setMessageType(null);
       }
     }
@@ -55,26 +57,14 @@ const App: React.FC = () => {
         {(collapsed) => (
           <>
             <Content
-              style={{
-                marginLeft: collapsed !== null && collapsed ? '0px' : '250px',
-              }}
-            ></Content>
-            <Content
-              className="content-main"
+              className="app-content-div"
               style={{
                 marginLeft: collapsed !== null && collapsed ? '16px' : '266px',
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
               }}
             >
-              <div>
-                {Array.from({ length: 100 }, (_, index) => (
-                  <React.Fragment key={index}>
-                    {index % 20 === 0 && !isNaN(index) ? 'more' : '...'}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </div>
+              <div></div>
             </Content>
           </>
         )}

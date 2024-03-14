@@ -3,7 +3,7 @@ import React from 'react';
 
 import privacypolicypdf from '../../../src/assets/privacy-policy.pdf';
 import Navigation from '../../components/Navigation';
-import { useUser } from '../../components/userContextConst';
+import { useUser } from '../../components/UserContextConst';
 import './PrivacyPolicy.css';
 
 const { Content } = Layout;

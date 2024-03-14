@@ -2,7 +2,7 @@ import { Typography } from 'antd';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { UserDispatchContext } from '../../components/userContext.tsx';
+import { UserDispatchContext } from '../../components/UserContext.tsx';
 import { type LoginPayload } from '../../util/types';
 import './Logout.css';
 
@@ -23,6 +23,7 @@ const App: React.FC = () => {
         className="logout-body-text"
         onClick={() => {
           userDispatch?.({ type: 'logged_out', payload: LoginPayloadDummy });
+          nav('/');
           nav(0);
         }}
       >

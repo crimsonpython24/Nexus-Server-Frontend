@@ -1,6 +1,7 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import { Button, Form, Input, Typography } from 'antd';
+import { Button, Form, Input, Typography, message } from 'antd';
+import { type NoticeType } from 'antd/es/message/interface';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +10,7 @@ import { usePopupContext } from '../../components/PopupContextConst';
 import {
   UserContext,
   UserDispatchContext,
-} from '../../components/userContext.tsx';
+} from '../../components/UserContext.tsx';
 import {
   type HCaptchaType,
   type LoginPayload,
@@ -76,7 +77,23 @@ const App: React.FC = () => {
   const userDispatch = useContext(UserDispatchContext);
   const userState = useContext(UserContext);
   const nav = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
   const { setShowMessage, setMessageType } = usePopupContext();
+
+  const showPopupMessage = async (
+    type: NoticeType,
+    content: string
+  ): Promise<void> => {
+    try {
+      await messageApi.open({
+        type,
+        content,
+      });
+      setShowMessage(false);
+    } catch (error) {
+      console.error('Failed to show popup message:', error);
+    }
+  };
 
   useEffect(() => {
     if (userState?.user.username !== '') {
@@ -98,11 +115,11 @@ const App: React.FC = () => {
           setShowMessage(true);
           nav('/');
         } else {
-          console.error(result.msg);
+          void showPopupMessage('error', result.msg);
         }
       })
-      .catch((error) => {
-        console.error('Error in login:', error);
+      .catch((error: string) => {
+        void showPopupMessage('error', 'Error in server: ' + error);
       });
   };
 
@@ -118,6 +135,7 @@ const App: React.FC = () => {
     <>
       {userState?.user.username === '' && (
         <>
+          {contextHolder}
           <Link to="/">
             <Button
               type="text"

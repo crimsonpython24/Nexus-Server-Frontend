@@ -5,8 +5,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../App.css';
+import { AccountText } from '../pages/auth/Account.tsx';
 import Logout from '../pages/auth/Logout.tsx';
 import { type NavigationProps } from '../util/types';
+import './Navigation.css';
 
 const { Header, Sider } = Layout;
 
@@ -44,7 +46,7 @@ const NotLoggedInLabel: React.ReactNode = (
 
 const LoggedInLabel: React.ReactNode = (
   <>
-    Account | <Logout />
+    <AccountText /> | <Logout />
   </>
 );
 
@@ -74,7 +76,7 @@ const Navigation: React.FC<NavigationProps> = ({ children, userState }) => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout className="full-height-layout">
       <Sider
         trigger={null}
         collapsible

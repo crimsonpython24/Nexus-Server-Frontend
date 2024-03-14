@@ -4,7 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from './App.tsx';
 import { PopupProvider } from './components/PopupContext.tsx';
-import { UserProvider } from './components/userContext.tsx';
+import { UserProvider } from './components/UserContext.tsx';
+import Account from './pages/auth/Account.tsx';
 import Login from './pages/auth/Login.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
 import Signup from './pages/auth/Signup.tsx';
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   { path: '/login/', element: <Login /> },
   { path: '/signup/', element: <Signup /> },
   { path: '/reset-password/', element: <ResetPassword /> },
+  { path: '/account/', element: <Account /> },
   { path: '/privacy-policy/', element: <PrivacyPolicy /> },
   { path: '/terms-of-service/', element: <ToS /> },
   { path: '*', element: <NotFound /> },

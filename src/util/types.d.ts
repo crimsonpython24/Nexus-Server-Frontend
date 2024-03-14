@@ -1,9 +1,9 @@
 // User Stuffs
 export interface UserData {
   username: string;
-  conversations: string[];
+  conversations: Conversation[];
   secretKey: string;
-  assistants: string[];
+  assistants: AssistantInfo[];
   invoices: Invoice[];
   balance: number;
 }
@@ -49,6 +49,25 @@ interface Invoice {
   total: number;
 }
 
+interface AssistantInfo {
+  name: string;
+  id: string;
+  model: string;
+  affiliation: string;
+}
+
+interface Conversation {
+  id: string;
+  title: string;
+  messages: Message[];
+}
+
+interface Message {
+  username: string;
+  content: string;
+  timestamp: string;
+}
+
 // Navigation Props
 export interface NavigationProps {
   children: (collapsed: boolean) => React.ReactNode;
@@ -77,4 +96,5 @@ export type MessageType =
   | 'warning'
   | 'loginsuccess'
   | 'loginredirecterror'
-  | 'loginerror';
+  | 'loginerror'
+  | 'usernotautherror';

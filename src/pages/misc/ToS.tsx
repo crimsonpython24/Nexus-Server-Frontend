@@ -3,7 +3,7 @@ import React from 'react';
 
 import tospdf from '../../../src/assets/terms-of-service.pdf';
 import Navigation from '../../components/Navigation';
-import { useUser } from '../../components/userContextConst';
+import { useUser } from '../../components/UserContextConst';
 import './ToS.css';
 
 const { Content } = Layout;
