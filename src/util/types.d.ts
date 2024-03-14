@@ -66,4 +66,15 @@ export interface HCaptchaType extends React.Component {}
 export interface PopupContextType {
   showMessage: boolean;
   setShowMessage: Dispatch<SetStateAction<boolean>>;
+  messageType: MessageType | null;
+  setMessageType: Dispatch<SetStateAction<MessageType | null>>;
 }
+
+export type MessageType =
+  | 'success'
+  | 'info'
+  | 'error'
+  | 'warning'
+  | 'loginsuccess'
+  | 'loginredirecterror'
+  | 'loginerror';

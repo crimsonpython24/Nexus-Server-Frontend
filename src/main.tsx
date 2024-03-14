@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import App from './App.tsx';
+import { PopupProvider } from './components/PopupContext.tsx';
 import { UserProvider } from './components/userContext.tsx';
 import Login from './pages/auth/Login.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
@@ -28,8 +30,10 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+    <PopupProvider>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </PopupProvider>
   </React.StrictMode>
 );

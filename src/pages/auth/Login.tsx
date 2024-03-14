@@ -5,6 +5,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { usePopupContext } from '../../components/PopupContextConst';
 import {
   UserContext,
   UserDispatchContext,
@@ -75,13 +76,15 @@ const App: React.FC = () => {
   const userDispatch = useContext(UserDispatchContext);
   const userState = useContext(UserContext);
   const nav = useNavigate();
+  const { setShowMessage, setMessageType } = usePopupContext();
 
   useEffect(() => {
     if (userState?.user.username !== '') {
-      console.log('already logged in');
+      setMessageType('loginredirecterror');
+      setShowMessage(true);
       nav('/');
     }
-  }, [userState?.user.username, nav]);
+  }, [userState?.user.username, nav, setShowMessage, setMessageType]);
 
   const onFinish = (values: LoginPayload): void => {
     login(values.username, values.password)
@@ -91,6 +94,8 @@ const App: React.FC = () => {
         if (result.status) {
           // set context provider values
           userDispatch?.({ type: 'logged_in', payload: pl });
+          setMessageType('loginsuccess');
+          setShowMessage(true);
           nav('/');
         } else {
           console.error(result.msg);
@@ -111,74 +116,82 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Link to="/">
-        <Button type="text" icon={<ArrowLeftOutlined />} className="go-back">
-          Go Back
-        </Button>
-      </Link>
-      <div className="login-form-parent">
-        <Form.Item>
-          <Typography.Title className="hor-center-item" level={3}>
-            Nexus-Client
-          </Typography.Title>
-        </Form.Item>
-        <Form
-          name="normal_login"
-          className="login-form"
-          initialValues={{ remember: false }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Username is required' }]}
-          >
-            <Input placeholder="Username" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Password is required' }]}
-          >
-            <Input.Password type="password" placeholder="Password" />
-          </Form.Item>
-          <Form.Item>
-            {/* <Link className="login-form-forgot" to="/reset-password">
+      {userState?.user.username === '' && (
+        <>
+          <Link to="/">
+            <Button
+              type="text"
+              icon={<ArrowLeftOutlined />}
+              className="go-back"
+            >
+              Go Back
+            </Button>
+          </Link>
+          <div className="login-form-parent">
+            <Form.Item>
+              <Typography.Title className="hor-center-item" level={3}>
+                Nexus-Client
+              </Typography.Title>
+            </Form.Item>
+            <Form
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: false }}
+              onFinish={onFinish}
+            >
+              <Form.Item
+                name="username"
+                rules={[{ required: true, message: 'Username is required' }]}
+              >
+                <Input placeholder="Username" />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: 'Password is required' }]}
+              >
+                <Input.Password type="password" placeholder="Password" />
+              </Form.Item>
+              <Form.Item>
+                {/* <Link className="login-form-forgot" to="/reset-password">
               Forgot Password?
             </Link> */}
-            <Text type="secondary" className="login-form-forgot">
-              Please contact us to reset password.
-            </Text>
-          </Form.Item>
+                <Text type="secondary" className="login-form-forgot">
+                  Please contact us to reset password.
+                </Text>
+              </Form.Item>
 
-          <Form.Item className="tail-form-items hor-center-item">
-            <HCaptchaNew {...HCaptchaProps} />
-          </Form.Item>
+              <Form.Item className="tail-form-items hor-center-item">
+                <HCaptchaNew {...HCaptchaProps} />
+              </Form.Item>
 
-          <Form.Item>
-            {logVerified && (
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-              >
-                Log in
-              </Button>
-            )}
-            {!logVerified && (
-              <Button
-                type="primary"
-                className="login-form-button"
-                disabled={true}
-              >
-                Solve Captcha
-              </Button>
-            )}
+              <Form.Item>
+                {logVerified && (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="login-form-button"
+                  >
+                    Log in
+                  </Button>
+                )}
+                {!logVerified && (
+                  <Button
+                    type="primary"
+                    className="login-form-button"
+                    disabled={true}
+                  >
+                    Solve Captcha
+                  </Button>
+                )}
 
-            <span className="hor-center-item">
-              No account? <Link to="/signup">Sign up</Link>
-            </span>
-          </Form.Item>
-        </Form>
-      </div>
+                <span className="hor-center-item">
+                  No account? <Link to="/signup">Sign up</Link>
+                </span>
+              </Form.Item>
+            </Form>
+          </div>
+        </>
+      )}
     </>
   );
 };
