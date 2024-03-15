@@ -17,6 +17,12 @@ export interface LoginPayload {
   username: string;
   password: string;
 }
+export interface SignupPayload {
+  username: string;
+  email: string;
+  password: string;
+  token: string;
+}
 
 export interface ModifiedLoginPayload {
   username: string;
@@ -33,6 +39,11 @@ export interface LoginResult {
   msg: string;
   status: boolean;
   secretKey: string;
+}
+
+export interface SignupResult {
+  msg: string;
+  status: boolean;
 }
 
 // Chat Types
@@ -97,4 +108,5 @@ export type MessageType =
   | 'loginsuccess'
   | 'loginredirecterror'
   | 'loginerror'
+  | 'signupsuccess'
   | 'usernotautherror';

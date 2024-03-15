@@ -123,26 +123,32 @@ const App: React.FC = () => {
 
   return (
     <>
-      {contextHolder}
-      <Navigation userState={userState}>
-        {(collapsed) => (
-          <>
-            <Content
-              className="app-content-div"
-              style={{
-                marginLeft: collapsed !== null && collapsed ? '16px' : '266px',
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-              }}
-            >
-              <div className="account-page-content">
-                <Title level={4}>Account Management</Title>
-                <Descriptions items={items} size={'small'} />
-              </div>
-            </Content>
-          </>
-        )}
-      </Navigation>
+      {userState?.user.username !== '' && (
+        <>
+          {contextHolder}
+          <Navigation userState={userState}>
+            {(collapsed) => (
+              <>
+                <Content
+                  className="app-content-div"
+                  style={{
+                    marginLeft:
+                      collapsed !== null && collapsed ? '16px' : '266px',
+                    background: colorBgContainer,
+                    borderRadius: borderRadiusLG,
+                  }}
+                >
+                  <div className="account-page-content">
+                    <Title level={4}>Account Management</Title>
+                    <Descriptions items={items} size={'small'} />
+                  </div>
+                </Content>
+              </>
+            )}
+          </Navigation>
+        </>
+      )}
+      ;
     </>
   );
 };

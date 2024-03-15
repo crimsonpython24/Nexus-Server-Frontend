@@ -76,9 +76,11 @@ const App: React.FC = () => {
   const [logVerified, setlogVerified] = useState(false);
   const userDispatch = useContext(UserDispatchContext);
   const userState = useContext(UserContext);
+  const { showMessage, setShowMessage, messageType, setMessageType } =
+    usePopupContext();
   const nav = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-  const { setShowMessage, setMessageType } = usePopupContext();
+  const prevShowMessageRef = React.useRef(false);
 
   const showPopupMessage = async (
     type: NoticeType,
@@ -94,6 +96,16 @@ const App: React.FC = () => {
       console.error('Failed to show popup message:', error);
     }
   };
+
+  React.useEffect(() => {
+    if (showMessage && !prevShowMessageRef.current) {
+      if (messageType === 'signupsuccess') {
+        void showPopupMessage('success', 'Signup successful!');
+        setMessageType(null);
+      }
+    }
+    prevShowMessageRef.current = showMessage;
+  });
 
   useEffect(() => {
     if (userState?.user.username !== '') {
